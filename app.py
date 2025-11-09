@@ -42,18 +42,15 @@ def fetchSettings():
     
     if soptions.upper() == "A":
         API_KEY = input("Input your API key.\n")
-        clear()
         mainMenu()
     
     elif soptions.upper() == "R":
         idleTime = int(input("How long should the forecast be refreshed in idle? Input in seconds, default is 300."))
-        clear()
         mainMenu()
         
     else:
         print('Not found.')
         time.sleep(1)
-        clear()
         mainMenu()
   
 def idle():
@@ -71,6 +68,7 @@ def idle():
 ## Menu
 
 def mainMenu():
+    clear()
     print('Welcome to Nimbus')
     print("F - Forecast\nL - Location\nU - Unit\nS - Settings\nI - Idle\nE - Exit")
 
@@ -107,4 +105,5 @@ def mainMenu():
         clear()
         mainMenu()
         
+
 mainMenu()
