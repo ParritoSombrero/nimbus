@@ -1,5 +1,5 @@
 # Nimbus
-Nimbus is a simple CLI-based weather app made in Python intended for underpowered devices based on OpenWeatherMap.
+Nimbus is a simple CLI-based weather app made in Python and utilizes the OWM API, intended for underpowered devices running Windows or Linux.
 ## How do I set this up?
 This is INSANELY important to follow or else the app will not work at all.
 
