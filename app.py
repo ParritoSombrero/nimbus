@@ -7,6 +7,7 @@ import time
 API_KEY = "none"
 CITY = "none"
 UNIT = "metric"
+SETTINGS_FILE = "settings.json"
 
 ## Variables
 
@@ -28,7 +29,7 @@ def fetchWeather():
         temp = main["temp"]
         humidity = main["humidity"]
         weather = data["weather"][0]["description"]
-        print(f"{CITY}: {temp} degrees, {humidity}% humidity, {weather}", flush=True)
+        print(f"{CITY}: \n Weather: {weather} \n Temperature: {temp} degrees \n Humidity: {humidity}%", flush=True)
     else:
         print("Error fetching weather.")
 
@@ -42,10 +43,12 @@ def fetchSettings():
     
     if soptions.upper() == "A":
         API_KEY = input("Input your API key.\n")
+        saveSettings()
         mainMenu()
     
     elif soptions.upper() == "R":
         idleTime = int(input("How long should the forecast be refreshed in idle? Input in seconds, default is 300."))
+        saveSettings()
         mainMenu()
         
     else:
@@ -65,8 +68,28 @@ def idle():
         
         time.sleep(idleTime) ## auto refresh
 
-## Menu
+def saveSettings():
+    settings = {
+        "API_KEY": API_KEY,
+        "CITY": CITY,
+        "UNIT": UNIT,
+        "idleTime": idleTime
+    }
+    with open(SETTINGS_FILE, "w") as f:
+        json.dump(settings, f)
 
+def loadSettings():
+    global API_KEY, CITY, UNIT, idleTime
+    if os.path.exists(SETTINGS_FILE):
+        with open(SETTINGS_FILE) as f:
+            s = json.load(f)
+            API_KEY = s.get("API_KEY", API_KEY)
+            CITY = s.get("CITY", CITY)
+            UNIT = s.get("UNIT", UNIT)
+            idleTime = s.get("idleTime", idleTime)
+ 
+## Menu
+loadSettings()
 def mainMenu():
     clear()
     print('Welcome to Nimbus')
@@ -84,12 +107,14 @@ def mainMenu():
         global CITY
         clear()
         CITY = input("Input your city name.\n")
+        saveSettings()
         clear()
         mainMenu()
     elif option.upper() == "U":
         global UNIT
         clear()
         UNIT = input("Input your preferred temperature unit (metric, imperial)\n")
+        saveSettings()
         clear()
         mainMenu()
     elif option.upper() == "S":
